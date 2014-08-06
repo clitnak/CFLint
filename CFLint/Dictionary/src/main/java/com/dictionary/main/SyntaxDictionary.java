@@ -533,6 +533,7 @@ public abstract class SyntaxDictionary {
 	 */
 	private void loadDictionary() throws IOException, SAXException, ParserConfigurationException {
 		// System.err.println("loading dictionary: " + filename);
+		System.err.println("u->" + this.getDictionaryURL() );
 		if (this.getDictionaryURL() == null)
 			throw new IOException("Dictionary file name can not be null!");
 		

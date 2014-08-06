@@ -24,9 +24,12 @@
  */
 package com.dictionary.main;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -108,17 +111,29 @@ public class DictionaryManager {
 			factory.setIgnoringElementContentWhitespace(true);
 			factory.setCoalescing(true);
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			if (fPrefs.getDictionaryDir().length() != 0) {
-				dictionaryConfig = builder.parse(new File(fPrefs.getDictionaryDir() + "/dictionaryconfig.xml"));
-			} else {
-				URL dc = new URL(fBuiltInDictionaryPath + "dictionaryconfig.xml");
-				dictionaryConfig = builder.parse(dc.openStream());
+//			if (fPrefs.getDictionaryDir().length() != 0) {
+//				dictionaryConfig = builder.parse(new File(fPrefs.getDictionaryDir() + "/dictionaryconfig.xml"));
+//			} else {
+//				URL dc = new URL(fBuiltInDictionaryPath + "dictionaryconfig.xml");
+//				dictionaryConfig = builder.parse(dc.openStream());
+//			}
+			if(dictionaryConfig==null){
+				//URL configurl = DictionaryManager.class.getResource("/dictionary/dictionaryconfig.xml");
+				// URL configurl = new URL(dictionaryConfigURL + "/dictionaryconfig.xml");
+				// System.err.println(configurl.getPath());
+				//System.err.println(configurl.getFile().toString());
+				InputStream is = DictionaryManager.class.getResourceAsStream("/dictionary/dictionaryconfig.xml");
+				/*BufferedReader reader =new BufferedReader(new InputStreamReader(is));
+				String line = reader.readLine();
+				StringBuilder sb = new StringBuilder();
+				while(line != null ){
+					sb.append(String.format("%1%n",line));
+				}*/
+				System.err.println("123:"+DictionaryManager.class.getResource("/dictionary/dictionaryconfig.xml"));
+				dictionaryConfig = builder.parse(is);
+				is.close();
+				System.err.println(dictionaryConfig);
 			}
-			// URL configurl = DictionaryManager.class.getResource("/dictionary/dictionaryconfig.xml");
-			// URL configurl = new URL(dictionaryConfigURL + "/dictionaryconfig.xml");
-			// System.err.println(configurl.getPath());
-			// System.err.println(configurl.getFile().toString());
-			// dictionaryConfig = builder.parse(configurl.getFile());
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 		}
