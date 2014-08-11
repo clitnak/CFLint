@@ -28,33 +28,33 @@ public class TestDictionaryManager {
 		assertNotNull(fun);
 	}
 	
-	@Test
-	public void testGetDictionary() {
-		DictionaryManager.initDictionaries();
-		SyntaxDictionary fun = DictionaryManager.getDictionary(DictionaryPreferenceConstants.CFDIC_KEY);
-		System.err.println(fun.getDictionaryURL());
-		Set wee = fun.getAllTags();
-		assertNotNull(fun);
-	}
-	
-	@Test
-	public void testGetDictionaryByVersion() {
-		DictionaryManager.initDictionaries();
-		SyntaxDictionary fun = DictionaryManager.getDictionaryByVersion(fPrefs.getCFDictionary());
-		System.err.println(fun.getDictionaryURL());
-		Set wee = fun.getAllTags();
-		assertNotNull(fun);
-	}
-	
 //	@Test
-//	public void testExternalDictionaryLocation() {
-//		DictionaryPreferences dprefs = new DictionaryPreferences();
-//		dprefs.setDictionaryDir("C:\CFLint\Dictionary\test\data\dictionary");
-//		dprefs.setCFDictionary("awesomedic");
-//		DictionaryManager.initDictionaries(dprefs);
-//		String[][] fun = DictionaryManager.getConfiguredDictionaries();
+//	public void testGetDictionary() {
+//		DictionaryManager.initDictionaries();
+//		SyntaxDictionary fun = DictionaryManager.getDictionary(DictionaryPreferenceConstants.CFDIC_KEY);
+//		System.err.println(fun.getDictionaryURL());
+//		Set wee = fun.getAllTags();
 //		assertNotNull(fun);
 //	}
+	
+//	@Test
+//	public void testGetDictionaryByVersion() {
+//		DictionaryManager.initDictionaries();
+//		SyntaxDictionary fun = DictionaryManager.getDictionaryByVersion(fPrefs.getCFDictionary());
+//		System.err.println(fun.getDictionaryURL());
+//		Set wee = fun.getAllTags();
+//		assertNotNull(fun);
+//	}
+	
+	@Test
+	public void testExternalDictionaryLocation() {
+		DictionaryPreferences dprefs = new DictionaryPreferences();
+		dprefs.setDictionaryDir("test/data/dictionary");
+		dprefs.setCFDictionary("awesomedic");
+		DictionaryManager.initDictionaries(dprefs);
+		String[][] fun = DictionaryManager.getConfiguredDictionaries();
+		assertNotNull(fun);
+	}
 	
 //	@Test
 //	public void testGetDictionaryByURL() {

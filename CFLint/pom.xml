@@ -5,6 +5,12 @@
 	<artifactId>com.cflint.main</artifactId>
 	<version>0.1.8</version>
 
+	<parent>
+		<groupId>com.cflint</groupId>
+		<artifactId>CFLint</artifactId>
+		<version>0.1.8</version>
+	</parent>
+	
 	<dependencies>
 		<dependency>
       		<groupId>${project.groupId}</groupId>
@@ -38,4 +44,102 @@
 		    <version>0.4</version>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${targetdirectory}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>assemble-standalone</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+						<configuration>
+							<programs>
+								<program>
+									<mainClass>com.cflint.main.CFLintMain</mainClass>
+									<!-- the name of the bat/sh files to be generated -->
+									<name>cflint</name>
+								</program>
+								<program>
+									<mainClass>com.cflint.main.CFLintMain</mainClass>
+									<commandLineArguments>
+										<commandLineArgument>--ui</commandLineArgument>
+									</commandLineArguments>
+									<!-- the name of the bat/sh files to be generated -->
+									<name>cflint-ui</name>
+								</program>
+							</programs>
+							<platforms>
+								<platform>windows</platform>
+								<platform>unix</platform>
+							</platforms>
+							<repositoryLayout>flat</repositoryLayout>
+							<repositoryName>lib</repositoryName>
+							<configurationDirectory>etc</configurationDirectory>
+							<configurationSourceDirectory>src/main/config</configurationSourceDirectory>
+							<copyConfigurationDirectory>true</copyConfigurationDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<!-- here the phase you need -->
+						<phase>integration-test</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/appassembler/ant</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/ant</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/archive.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

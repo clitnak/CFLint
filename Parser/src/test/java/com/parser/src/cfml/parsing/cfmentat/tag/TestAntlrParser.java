@@ -36,60 +36,60 @@ import com.parser.main.cfscript.script.CFScriptStatement;
  * 
  */
 public class TestAntlrParser {
-	private static final String sourceUrlString = "file:test/data/tag/attribute/simpleTests.xml";
-	private Source fSource;
-	private CFExpression cfexpression;
-	private CFScriptStatement scriptstatement;
+//	private static final String sourceUrlString = "file:test/data/tag/attribute/simpleTests.xml";
+//	private Source fSource;
+//	private CFExpression cfexpression;
+//	private CFScriptStatement scriptstatement;
+//	
+//	/**
+//	 * @throws java.lang.Exception
+//	 */
+//	@Before
+//	public void setUp() throws Exception {
+//		
+//	}
 	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		
-	}
-	
-	@Test
-	public void testCFScriptStatement() {
-		CFScriptStatement scriptStatement;
-		String script = "var x = 1; y = 5; createObject('java','java.lang.String'); createObject('java','java.lang.String');";
-		char[] scriptWithEndTag = script.toCharArray();
-		
-		try {
-			poundSignFilterStream psfstream = new poundSignFilterStream(new CharArrayReader(scriptWithEndTag));
-			ANTLRNoCaseReaderStream input = new ANTLRNoCaseReaderStream(psfstream); // +
-			// "</CFSCRIPT>")
-			// )
-			// );
-			
-			CFScriptLexer lexer = new CFScriptLexer(input);
-			CommonTokenStream tokens = new CommonTokenStream(lexer);
-			CFScriptParser parser = new CFScriptParser(tokens);
-			ParserRuleReturnScope r = parser.scriptBlock();
-			CommonTree tree = (CommonTree) r.getTree();
-			
-			CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
-			nodes.setTokenStream(tokens);
-			CFScriptTree p2 = new CFScriptTree(nodes);
-			scriptStatement = p2.scriptBlock();
-			
-			// find special cases of "#varName#"="value";
-			sourceReader sr = new sourceReader(new BufferedReader(new CharArrayReader(script.toCharArray())));
-			scriptStatement.checkIndirectAssignments(sr.getLines());
-			
-		} catch (RecognitionException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (poundSignFilterStreamException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void testCFExpression() {
-		CFExpression expression = cfexpression.getCFExpression("a=\"a\" & \"wee\"");
-		assertTrue(expression instanceof CFAssignmentExpression);
-	}
+//	@Test
+//	public void testCFScriptStatement() {
+//		CFScriptStatement scriptStatement;
+//		String script = "var x = 1; y = 5; createObject('java','java.lang.String'); createObject('java','java.lang.String');";
+//		char[] scriptWithEndTag = script.toCharArray();
+//		
+//		try {
+//			poundSignFilterStream psfstream = new poundSignFilterStream(new CharArrayReader(scriptWithEndTag));
+//			ANTLRNoCaseReaderStream input = new ANTLRNoCaseReaderStream(psfstream); // +
+//			// "</CFSCRIPT>")
+//			// )
+//			// );
+//			
+//			CFScriptLexer lexer = new CFScriptLexer(input);
+//			CommonTokenStream tokens = new CommonTokenStream(lexer);
+//			CFScriptParser parser = new CFScriptParser(tokens);
+//			ParserRuleReturnScope r = parser.scriptBlock();
+//			CommonTree tree = (CommonTree) r.getTree();
+//			
+//			CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
+//			nodes.setTokenStream(tokens);
+//			CFScriptTree p2 = new CFScriptTree(nodes);
+//			scriptStatement = p2.scriptBlock();
+//			
+//			// find special cases of "#varName#"="value";
+//			sourceReader sr = new sourceReader(new BufferedReader(new CharArrayReader(script.toCharArray())));
+//			scriptStatement.checkIndirectAssignments(sr.getLines());
+//			
+//		} catch (RecognitionException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (poundSignFilterStreamException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	@Test
+//	public void testCFExpression() {
+//		CFExpression expression = cfexpression.getCFExpression("a=\"a\" & \"wee\"");
+//		assertTrue(expression instanceof CFAssignmentExpression);
+//	}
 	
 }

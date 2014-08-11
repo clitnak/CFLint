@@ -112,7 +112,8 @@ public class DictionaryManager {
 				dictionaryConfig = builder.parse(new File(fPrefs.getDictionaryDir() + "/dictionaryconfig.xml"));
 			} else {
 				URL dc = new URL(fBuiltInDictionaryPath + "dictionaryconfig.xml");
-				dictionaryConfig = builder.parse(dc.openStream());
+				InputStream test = dc.openStream();
+				dictionaryConfig = builder.parse(test);
 			}
 			// URL configurl = DictionaryManager.class.getResource("/dictionary/dictionaryconfig.xml");
 			// URL configurl = new URL(dictionaryConfigURL + "/dictionaryconfig.xml");
