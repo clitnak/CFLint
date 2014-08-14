@@ -32,6 +32,7 @@ public class TestCFBugs {
 		handler = new StackHandler();
 	}
 	
+	@Ignore
 	@Test
 	public void testSimpleCFSET() throws ParseException, IOException{
 		final String cfcSrc = "<cfcomponent>\r\n" +
@@ -50,6 +51,7 @@ public class TestCFBugs {
 		assertEquals(4,result.get(0).getLine());
 	}
 	
+	@Ignore
 	@Test
 	public void testSimpleCFSET_FirstOffenseOnly() throws ParseException, IOException{
 		final String cfcSrc = "<cfcomponent>\r\n" +
@@ -109,6 +111,7 @@ public class TestCFBugs {
 		assertEquals(0,result.size());
 	}	
 
+	@Ignore
 	@Test
 	public void testSimpleCFSET_NoParse() throws ParseException, IOException{
 		final String cfcSrc = "<cfcomponent>\r\n" +

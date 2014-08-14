@@ -20,14 +20,9 @@ import com.cflint.listeners.ProgressMonitorListener;
 import com.cflint.listeners.ScanProgressListener;
 import com.cflint.plugins.CFLintScanner;
 import com.cflint.plugins.Context;
-import com.cflint.plugins.core.ArgDefChecker;
-import com.cflint.plugins.core.ArgVarChecker;
-import com.cflint.plugins.core.GlobalVarChecker;
-import com.cflint.plugins.core.NestedCFOutput;
-import com.cflint.plugins.core.OutputParmMissing;
-import com.cflint.plugins.core.QueryParamChecker;
-import com.cflint.plugins.core.TypedQueryNew;
-import com.cflint.plugins.core.VarScoper;
+import com.cflint.plugins.core.CFInsertTagChecker;
+import com.cflint.plugins.core.CFModuleTagChecker;
+import com.cflint.plugins.core.CFUpdateTagChecker;
 import com.cflint.tools.CFLintFilter;
 
 import net.htmlparser.jericho.Element;
@@ -72,17 +67,40 @@ public class CFLint implements IErrorReporter {
 	List<ScanProgressListener> scanProgressListeners = new ArrayList<ScanProgressListener>();
 
 	public CFLint() {
-		this(new NestedCFOutput(), new TypedQueryNew(), new VarScoper(), new ArgVarChecker(), new ArgDefChecker(),
-				new OutputParmMissing(), new GlobalVarChecker(), new QueryParamChecker());
+		this(	//new NestedCFOutput(), 
+				//new TypedQueryNew(), 
+				//new VarScoper(), 
+				//new ArgVarChecker(), 
+				//new ArgDefChecker(),
+				//new GlobalVarChecker(), 
+				//new QueryParamChecker(), 
+				//new CommentChecker(), 
+				//new CfqueryChecker(), 
+				//new CFScriptTagCountChecker(), 
+				//new CFDumpChecker(), 
+				//new CFNestedControlStatementChecker(), 
+				//new CFEmptyCodeBlockChecker(),
+				//new HintChecker(), 
+				//new CFSwitchDefaultChecker(), 
+				//new FunctionLengthChecker(), 
+				//new FunctionOutputChecker(), 
+				//new CFKeywordLowercaseChecker(),
+				//new CfmcTagChecker(),
+				//new TagCaseChecker(),
+				//new CFComponentChecker(),
+				//new SelectStarChecker(),
+				new CFModuleTagChecker(),
+				new CFInsertTagChecker(),
+				new CFUpdateTagChecker());
 	}
 
 	public CFLint(final CFLintScanner... bugsScanners) {
 		super();
-
-		// DictionaryPreferences dprefs = new DictionaryPreferences();
-		// dprefs.setDictionaryDir("C:\\projects\\cfml.dictionary-master\\dictionary");
-		// DictionaryManager.initDictionaries(dprefs);
-
+		
+//		DictionaryPreferences dprefs = new DictionaryPreferences();
+//		dprefs.setDictionaryDir("C:\\projects\\cfml.dictionary-master\\dictionary");
+//		DictionaryManager.initDictionaries(dprefs);
+		
 		for (final CFLintScanner scanner : bugsScanners) {
 			extensions.add(scanner);
 		}
@@ -99,38 +117,7 @@ public class CFLint implements IErrorReporter {
 
 	public void scan(final String folder) {
 		final File f = new File(folder);
-		if (showProgress) {
-			final ProgressMonitorListener progressMonitorListener = new ProgressMonitorListener("CFLint");
-			addScanProgressListener(progressMonitorListener);
-			if (progressUsesThread) {
-				new Thread(new Runnable() {
-					
-					public void run() {
-						prescan(f,0,progressMonitorListener);
-					}
-				}).start();
-			}else{
-				prescan(f,0,progressMonitorListener);
-			}
-		}
 		scan(f);
-		fireClose();
-	}
-
-	private int prescan(File folderOrFile, int counter,final ProgressMonitorListener progressMonitorListener) {
-		if (folderOrFile.isDirectory()) {
-			for (final File file : folderOrFile.listFiles()) {
-				counter=prescan(file,counter,progressMonitorListener);
-			}
-			if(counter>10){
-				progressMonitorListener.setTotalToProcess(counter);
-			}
-			return counter;
-		} else if (!folderOrFile.isHidden() && checkExtension(folderOrFile)) {
-			return counter+1;
-		}else{
-			return counter;
-		}
 	}
 
 	public void scan(final File folderOrFile) {
@@ -139,20 +126,56 @@ public class CFLint implements IErrorReporter {
 				scan(file);
 			}
 		} else if (!folderOrFile.isHidden() && checkExtension(folderOrFile)) {
+			//check number of lines in a file
+			//rule: number of lines per file should be under linesThreshold
+			/*int lines = 0;
+			try {
+				Scanner scanner = new Scanner(folderOrFile);
+				while (scanner.hasNext()) {
+					lines++;
+					String line = scanner.nextLine();
+					int lineLengthThreshold = 180;
+					//check number of characters per line
+					//rule: number of character per line should be under lineLengthThreshold
+					if (line.length() > lineLengthThreshold) {
+						bugs.add(new BugInfo.BugInfoBuilder().setMessageCode("EXCESSIVE_FILE_LENGTH")
+								.setFilename(folderOrFile.getAbsolutePath())
+								.setMessage("Line number " + lines + " is " + line.length() + " characters long. Over the " 
+										+ lineLengthThreshold + " character threshold")
+								.setSeverity("INFO").build());
+					}
+				}
+				scanner.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			
+			int linesThreshold = 500; //move this to be a static constant
+			if (lines > linesThreshold) { 
+				bugs.add(new BugInfo.BugInfoBuilder().setMessageCode("EXCESSIVE_FILE_LENGTH")
+						.setFilename(folderOrFile.getAbsolutePath())
+						.setMessage(folderOrFile.getName() + " is " + lines + " lines long. Over the " + linesThreshold + " line threshold")
+						.setSeverity("INFO").build());
+			}*/
+			
 			final String src = load(folderOrFile);
-			// System.out.println("processing " + file);
+			//System.out.println("processing " + file);
 			try {
 				process(src, folderOrFile.getAbsolutePath());
 			} catch (final Exception e) {
+				//rj- commenting this out as these errors are antlr errors from cfscript parsing (mainly
+				//primaryExpression dealing with semicolons) due to railo/blue dragon differences.
+				/*
 				e.printStackTrace();
 				bugs.add(new BugInfo.BugInfoBuilder().setMessageCode("FILE_ERROR")
 						.setFilename(folderOrFile.getAbsolutePath()).setMessage(e.getMessage()).setSeverity("ERROR")
 						.build());
+				*/
 			}
 		}
 	}
 
-	protected boolean checkExtension(final File file) {
+	private boolean checkExtension(final File file) {
 		for (final String ext : allowedExtensions) {
 			if (file.getName().endsWith(ext)) {
 				return true;
@@ -167,6 +190,7 @@ public class CFLint implements IErrorReporter {
 			fis = new FileInputStream(file);
 			final byte[] b = new byte[fis.available()];
 			fis.read(b);
+			fis.close();
 			return new String(b);
 		} catch (final Exception e) {
 			return null;
@@ -174,21 +198,17 @@ public class CFLint implements IErrorReporter {
 	}
 
 	public void process(final String src, final String filename) throws ParseException, IOException {
-		fireStartedProcessing(filename);
 		final CFMLSource cfmlSource = new CFMLSource(src);
 		final List<Element> elements = cfmlSource.getChildElements();
-		currentFile = filename;
 		if (elements.size() == 0 && src.contains("component")) {
 			// Check if pure cfscript
-			final CFMLParser cfmlParser = new CFMLParser();
+			CFMLParser cfmlParser = new CFMLParser();
 			cfmlParser.setErrorReporter(this);
 			final CFScriptStatement scriptStatement = cfmlParser.parseScript(src);
 			process(scriptStatement, filename, null, null);
 		} else {
 			processStack(elements, " ", filename, null);
 		}
-		currentFile = null;
-		fireFinishedProcessing(filename);
 	}
 
 	public void processStack(final List<Element> elements, final String space, final String filename,
@@ -206,9 +226,9 @@ public class CFLint implements IErrorReporter {
 		for (final CFLintScanner plugin : extensions) {
 			plugin.element(elem, context, bugs);
 		}
-		if (elem.getName().equals("cfset") || elem.getName().equals("cfif")) {
-			final int elemLine = elem.getSource().getRow(elem.getBegin());
-			final int elemColumn = elem.getSource().getColumn(elem.getBegin());
+		if (elem.getName().equals("cfif")) {
+			//final int elemLine = elem.getSource().getRow(elem.getBegin());
+			//final int elemColumn = elem.getSource().getColumn(elem.getBegin());
 			final Pattern p = Pattern.compile("<\\w+\\s(.*[^/])/?>");
 			final String expr = elem.getFirstStartTag().toString();
 			final Matcher m = p.matcher(expr);
@@ -221,16 +241,19 @@ public class CFLint implements IErrorReporter {
 					process(expression, filename, elem, functionName);
 				} catch (final Exception npe) {
 					final int line = elem.getSource().getRow(elem.getBegin());
-					final int column = elem.getSource().getColumn(elem.getBegin());
-					if (!quiet) {
-						System.err.println("Error in: " + shortSource(elem.getSource(), line) + " @ " + line + ":");
-						if (verbose) {
+					//final int column = elem.getSource().getColumn(elem.getBegin());
+					if(!quiet){
+						System.err.println("Error in: " + shortSource(elem.getSource(),line) + " @ " + line + ":");
+						if(verbose){
 							npe.printStackTrace(System.err);
 						}
 					}
+					//commented this and dont worry about parse errors -only small blue dragon/railo differences
+					/*
 					bugs.add(new BugInfo.BugInfoBuilder().setLine(elemLine).setColumn(elemColumn + column)
 							.setMessageCode("PARSE_ERROR").setSeverity("ERROR").setExpression(m.group(1))
 							.setFilename(filename).setFunction(functionName).setMessage("Unable to parse").build());
+					*/
 				}
 			}
 		} else if (elem.getName().equals("cfargument")) {
@@ -240,7 +263,7 @@ public class CFLint implements IErrorReporter {
 			}
 		} else if (elem.getName().equals("cfscript")) {
 			final String cfscript = elem.getContent().toString();
-			final CFMLParser cfmlParser = new CFMLParser();
+			CFMLParser cfmlParser = new CFMLParser();
 			cfmlParser.setErrorReporter(this);
 			final CFScriptStatement scriptStatement = cfmlParser.parseScript(cfscript);
 			process(scriptStatement, filename, elem, functionName);
@@ -248,7 +271,7 @@ public class CFLint implements IErrorReporter {
 			// final Element parent = CFTool.getNamedParent(elem, "cfoutput");
 			// if (parent != null && parent.getAttributeValue("query") != null
 			// && parent.getAttributeValue("group") == null) {
-			// final int line = elem.getSource().getRow(elem.getBegin());
+			// final into line = elem.getSource().getRow(elem.getBegin());
 			// final int column = elem.getSource().getColumn(elem.getBegin());
 			// bugs.add(new
 			// BugInfo.BugInfoBuilder().setLine(line).setColumn(column).setMessageCode("NESTED_CFOUTPUT")
@@ -275,9 +298,10 @@ public class CFLint implements IErrorReporter {
 			processStack(list.subList(1, list.size()), space + " ", filename, functionName);
 		} else if (elem.getName().equalsIgnoreCase("cfqueryparam")) {
 			if (elem.getAttributeValue("value") != null) {
-				final CFMLParser cfmlParser = new CFMLParser();
+				CFMLParser cfmlParser = new CFMLParser();
 				cfmlParser.setErrorReporter(this);
-				final CFScriptStatement scriptStatement = cfmlParser.parseScript(elem.getAttributeValue("value") + ";");
+				final CFScriptStatement scriptStatement = cfmlParser.parseScript(elem.getAttributeValue("value")
+						+ ";");
 				process(scriptStatement, filename, elem, functionName);
 			}
 		} else {
@@ -285,19 +309,17 @@ public class CFLint implements IErrorReporter {
 		}
 	}
 
-	private String shortSource(final Source source, final int line) {
-		final String retval = source == null ? "" : source.toString().trim();
-		if (retval.length() < 300) {
+	private String shortSource(Source source, int line) {
+		final String retval = source == null?"":source.toString().trim();
+		if(retval.length()<300)
 			return retval;
-		}
-		try {
-			final BufferedReader sr = new BufferedReader(new StringReader(source.toString()));
-			for (int i = 1; i < line; i++) {
+		try{
+			BufferedReader sr = new BufferedReader(new StringReader(source.toString()));
+			for(int i=1; i<line; i++){
 				sr.readLine();
 			}
 			return sr.readLine().replaceAll("\t", " ");
-		} catch (final Exception e) {
-		}
+		}catch(Exception e){}
 		return retval.substring(0, 300);
 	}
 

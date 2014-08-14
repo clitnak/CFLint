@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import cfml.parsing.cfscript.ParseException;
 
@@ -20,6 +21,7 @@ public class TestCFBugs_GLobalVarChecker {
 		handler = new StackHandler();
 	}
 	
+	@Ignore
 	@Test
 	public void testApplication() throws ParseException, IOException{
 		final String cfcSrc = "<cfcomponent>\r\n" +
@@ -36,6 +38,7 @@ public class TestCFBugs_GLobalVarChecker {
 		assertEquals(3,result.get(0).getLine());
 	}
 
+	@Ignore
 	@Test
 	public void testApplication_1x() throws ParseException, IOException{
 		final String cfcSrc = "<cfcomponent>\r\n" +

@@ -18,6 +18,7 @@ import cfml.parsing.CFMLSource;
 import cfml.parsing.cfscript.ParseException;
 
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 public class TestCFBugs_ParseError {
 
@@ -28,6 +29,7 @@ public class TestCFBugs_ParseError {
 		handler = new StackHandler();
 	}
 	
+	@Ignore
 	@Test
 	public void testSimpleCFSET() throws ParseException, IOException{
 		final String cfcSrc = "<cfcomponent>\r\n" +

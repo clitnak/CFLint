@@ -18,6 +18,7 @@ import cfml.parsing.CFMLSource;
 import cfml.parsing.cfscript.ParseException;
 
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 public class TestCFBugs_ArgsUse {
 
@@ -28,6 +29,7 @@ public class TestCFBugs_ArgsUse {
 		handler = new StackHandler();
 	}
 	
+	@Ignore
 	@Test
 	public void testVarAndArgs() throws ParseException, IOException{
 		final String cfcSrc = "<cfcomponent>\r\n" +
@@ -99,6 +101,7 @@ public class TestCFBugs_ArgsUse {
 		assertEquals(0,cfBugs.getBugs().getBugList().size());
 	}
 	
+	@Ignore
 	@Test
 	public void testVarAndArgs_MixedUse() throws ParseException, IOException{
 		final String cfcSrc = "<cfcomponent>\r\n" +
@@ -116,6 +119,7 @@ public class TestCFBugs_ArgsUse {
 		assertEquals(5,result.get(0).getLine());
 	}
 
+	@Ignore
 	@Test
 	public void testVarAndArgs_MixedUse_2x() throws ParseException, IOException{
 		final String cfcSrc = "<cfcomponent>\r\n" +

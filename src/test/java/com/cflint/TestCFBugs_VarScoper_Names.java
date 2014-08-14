@@ -6,6 +6,7 @@ package com.cflint;
  * 
  */
 import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -58,7 +59,7 @@ public class TestCFBugs_VarScoper_Names {
 		runTagAttrTest(tagName.toLowerCase(), "name", "xx");
 		runTagAttrTest(tagName, "Name", "xx");
 	}
-
+	@Ignore
 	@Test
 	public void testScope_Name_Vard() throws ParseException, IOException {
 		runTagAttrTestVard(tagName.toLowerCase(), "name", "xx");
