@@ -9,6 +9,11 @@ git clone https://github.com/cflint/CFLint.git
 cd CFLint
 mvn clean install
 ```
+
+#### Packaging CFLint into runnable jar
+```
+mvn package
+```
 	
 #### Building CFParser *(optional)*
 Maven will pull the CFParser from the cfparser maven repository on github.  However if you want to build cfparser as well:
