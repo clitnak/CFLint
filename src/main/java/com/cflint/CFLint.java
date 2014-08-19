@@ -23,6 +23,7 @@ import com.cflint.plugins.Context;
 import com.cflint.plugins.core.CFInsertTagChecker;
 import com.cflint.plugins.core.CFModuleTagChecker;
 import com.cflint.plugins.core.CFUpdateTagChecker;
+import com.cflint.plugins.core.SelectStarChecker;
 import com.cflint.tools.CFLintFilter;
 
 import net.htmlparser.jericho.Element;
@@ -88,7 +89,7 @@ public class CFLint implements IErrorReporter {
 				//new CfmcTagChecker(),
 				//new TagCaseChecker(),
 				//new CFComponentChecker(),
-				//new SelectStarChecker(),
+				new SelectStarChecker(),
 				new CFModuleTagChecker(),
 				new CFInsertTagChecker(),
 				new CFUpdateTagChecker());
