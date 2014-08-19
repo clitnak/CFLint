@@ -4,9 +4,8 @@ public enum CFSeverity {
 	INFO("Info"),
 	CAUTION("Caution"),
 	WARNING("Warning"),
-	ERROR("Error"),
 	CRITICAL("Critical"),
-	HIGH("High"),
+	ERROR("Error"),
 	FATAL("Fatal");
 
 	private final String value;

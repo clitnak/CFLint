@@ -155,9 +155,12 @@
 		</td>
 		<td width="10%" valign="top">
 			<xsl:choose>
-				<xsl:when test="@priority = 1">High</xsl:when>
-				<xsl:when test="@priority = 2">Medium</xsl:when>
-				<xsl:when test="@priority = 3">Low</xsl:when>
+				<xsl:when test="@priority = 1">Fatal</xsl:when>
+				<xsl:when test="@priority = 2">Error</xsl:when>
+				<xsl:when test="@priority = 3">Critical</xsl:when>
+				<xsl:when test="@priority = 4">Warning</xsl:when>
+				<xsl:when test="@priority = 5">Caution</xsl:when>
+				<xsl:when test="@priority = 6">Info</xsl:when>
 				<xsl:otherwise>Unknown</xsl:otherwise>
 			</xsl:choose>
 		</td>

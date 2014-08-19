@@ -87,13 +87,31 @@ xmlns:sets="http://exslt.org/sets">
 			<xsl:attribute name="type">
 				<xsl:value-of select="../@category" />
 			</xsl:attribute>
+
+			<!--INFO("Info"),
+			CAUTION("Caution"),
+			WARNING("Warning"),
+			ERROR("Error"),
+			CRITICAL("Critical"),
+			FATAL("Fatal");-->
+
+
 			<xsl:attribute name="priority">
 				<xsl:choose>
-					<xsl:when test="../@severity = 'ERROR' or ../@severity = 'Error'">1</xsl:when>
-					<xsl:when test="../@severity = 'WARNING' or ../@severity = 'Warning'">2</xsl:when>
-					<xsl:when test="../@severity = 'INFO' or ../@severity = 'Info'">3</xsl:when>
+					<xsl:when test="../@severity = 'FATAL' or ../@severity = 'Fatal'">1</xsl:when>
+					<xsl:when test="../@severity = 'ERROR' or ../@severity = 'Error'">2</xsl:when>
+					<xsl:when test="../@severity = 'CRITICAL' or ../@severity = 'Critical'">3</xsl:when>
+					<xsl:when test="../@severity = 'WARNING' or ../@severity = 'Warning'">4</xsl:when>
+					<xsl:when test="../@severity = 'CAUTION' or ../@severity = 'Caution'">5</xsl:when>
+					<xsl:when test="../@severity = 'INFO' or ../@severity = 'Info'">6</xsl:when>
 				</xsl:choose>
 			</xsl:attribute>
+
+
+
+
+
+
 			<xsl:attribute name="abbrev">
 				<xsl:value-of select="../@abbrev" />
 			</xsl:attribute>
