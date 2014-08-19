@@ -38,7 +38,7 @@ public class SelectStarChecker implements CFLintScanner {
 			if (queryGuts.contains(selectStar)){
 				int beginLine = element.getSource().getRow(element.getBegin());
 				bugs.add(new BugInfo.BugInfoBuilder().setLine(beginLine).setMessageCode("AVOID_SELECT_*_IN_QUERY")
-					.setSeverity(CFSeverity.CRITICAL.getValue()).setFilename(context.getFilename())
+					.setSeverity(CFSeverity.ERROR.getValue()).setFilename(context.getFilename())
 					.setMessage("Avoid using 'select *' in a query")
 					.build());
 				}
