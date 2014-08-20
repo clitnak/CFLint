@@ -5,7 +5,13 @@ public enum CFMLTag {
 	CFCOMPONENT("cfcomponent"),
 	CFARGUMENT("cfargument"),
 	CFOUTPUT("cfoutput"),
-	CFQUERY("cfquery");
+	CFQUERY("cfquery"),
+	CFDUMP("cfdump"),
+	CFINSERT("cfinsert"),
+	CFSWITCH("cfswitch"),
+	CFDEFAULTCASE("cfdefaultcase"),
+	CFUPDATE("cfupdate"),
+	CFMODULE("cfmodule");
 	
 	private final String value;
 

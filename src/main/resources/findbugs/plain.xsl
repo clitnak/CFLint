@@ -34,7 +34,7 @@
 <xsl:variable name="bugTableHeader">
 	<tr class="tableheader">
 		<th align="left">Warning</th>
-		<th align="left">Severity</th>
+		<th align="left">Priority</th>
 		<th align="left">Details</th>
 	</tr>
 </xsl:variable>
@@ -72,7 +72,7 @@
 	<body>
 
 	<h1>CFLint Report</h1>
-		<p>Produced using <a href="https://github.com/ryaneberly/CFLint">CFLint</a> <xsl:value-of select="/BugCollection/@version"/>.</p>
+		<p>Produced using <a href="https://github.com/cflint/CFLint">CFLint </a> <xsl:value-of select="/BugCollection/@version"/>.</p>
 		<p>Project: 
 			<xsl:choose>
 				<xsl:when test='string-length(/BugCollection/Project/@projectName)>0'><xsl:value-of select="/BugCollection/Project/@projectName" /></xsl:when>
@@ -155,12 +155,9 @@
 		</td>
 		<td width="10%" valign="top">
 			<xsl:choose>
-				<xsl:when test="@priority = 1">Fatal</xsl:when>
-				<xsl:when test="@priority = 2">Error</xsl:when>
-				<xsl:when test="@priority = 3">Critical</xsl:when>
-				<xsl:when test="@priority = 4">Warning</xsl:when>
-				<xsl:when test="@priority = 5">Caution</xsl:when>
-				<xsl:when test="@priority = 6">Info</xsl:when>
+				<xsl:when test="@priority = 1">High</xsl:when>
+				<xsl:when test="@priority = 2">Medium</xsl:when>
+				<xsl:when test="@priority = 3">Low</xsl:when>
 				<xsl:otherwise>Unknown</xsl:otherwise>
 			</xsl:choose>
 		</td>

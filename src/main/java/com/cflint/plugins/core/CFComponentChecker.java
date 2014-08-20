@@ -14,6 +14,8 @@ import com.cflint.tools.CFSeverity;
 
 @Extension
 public class CFComponentChecker implements CFLintScanner {
+	final String messageCode = "CFSCRIPT_FOR_COMPONENT_RECOMMENDED";
+	final String message = "Components should be written in cfscript.";
 	
 	public void expression(final CFExpression expression, final Context context, final BugList bugs) {
 		
@@ -27,9 +29,9 @@ public class CFComponentChecker implements CFLintScanner {
 		String tagName = element.getName();
 		if (tagName.equals(CFMLTag.CFCOMPONENT.getValue())) {
 			int begLine = element.getSource().getRow(element.getBegin());
-			bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode("CFSCRIPT_FOR_COMPONENT_RECOMMENDED")
+			bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode(messageCode)
 				.setSeverity(CFSeverity.INFO.getValue()).setFilename(context.getFilename())
-				.setMessage("Components should be written in cfscript.")
+				.setMessage(message)
 				.build());
 		}
 	}

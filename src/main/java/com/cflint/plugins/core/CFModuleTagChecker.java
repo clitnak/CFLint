@@ -10,9 +10,15 @@ import com.cflint.BugList;
 import com.cflint.plugins.CFLintScanner;
 import com.cflint.plugins.Context;
 import com.cflint.tools.CFSeverity;
+import com.cflint.tools.CFMLTag;
 
 @Extension
 public class CFModuleTagChecker implements CFLintScanner {
+	final String messageCode = "AVOID_USING_" + CFMLTag.CFMODULE.getValue().toUpperCase() + "_TAG";
+	final String message = "There are performance issues with the <" + 
+							CFMLTag.CFMODULE.getValue().toUpperCase() +
+							"> tag. Better options exist: consider using a CFC (preferred)," +
+							" use cfimport and invoke a custom tag using a prefix, or 'include' a file";
 	
 	public void expression(final CFExpression expression, final Context context, final BugList bugs) {
 		
@@ -25,11 +31,11 @@ public class CFModuleTagChecker implements CFLintScanner {
 	//rule: do not use cfmodule tag 
 	public void element(final Element element, final Context context, final BugList bugs) {
 		String tagName = element.getName();
-		if (tagName.equalsIgnoreCase("cfmodule")){
+		if (tagName.equalsIgnoreCase(CFMLTag.CFMODULE.getValue())){
 			int begLine = element.getSource().getRow(element.getBegin());
-			bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode("AVOID_USING_"+tagName.toUpperCase()+"_TAG")
+			bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode(messageCode)
 				.setSeverity(CFSeverity.WARNING.getValue()).setFilename(context.getFilename())
-				.setMessage("There are performance issues with the "+ tagName +" tag. Better options exist: consider using a CFC (preferred), use cfimport and invoke a custom tag using a prefix, or 'include' a file")
+				.setMessage(message)
 				.build());
 			}
 		}

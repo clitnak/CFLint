@@ -26,7 +26,7 @@ public class CFKeywordOverSymbolChecker implements CFLintScanner {
 		
 		int begLine = element.getSource().getRow(element.getBegin());
 		bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode("USE_OF_KEYWORD_PREFERRED_OVER_SYMBOL")
-			.setSeverity(CFSeverity.CAUTION.getValue()).setFilename(context.getFilename())
+			.setSeverity(CFSeverity.WARNING.getValue()).setFilename(context.getFilename())
 			.setMessage("Use of keyword comparision is preferred over a symbolic operator (ex: equals, not ==)")
 			.build());
 	}

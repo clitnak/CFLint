@@ -16,6 +16,7 @@ import com.cflint.tools.CFSeverity;
 public class CFKeywordLowercaseChecker implements CFLintScanner {
 	
 	String[] keywordsToCheckFor = CFKeyword.keywordValues();
+	final String messageCode = "KEYWORDS_SHOULD_BE_LOWERCASE";
 		
 	public void expression(final CFExpression expression, final Context context, final BugList bugs) {
 		
@@ -30,8 +31,8 @@ public class CFKeywordLowercaseChecker implements CFLintScanner {
 		String tag = element.getStartTag().toString();
 		for (String s : keywordsToCheckFor) {
 			if (tag.contains(s.toUpperCase())) {
-				bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode("KEYWORDS_SHOULD_BE_LOWERCASE")
-					.setSeverity(CFSeverity.CAUTION.getValue()).setFilename(context.getFilename())
+				bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode(messageCode)
+					.setSeverity(CFSeverity.WARNING.getValue()).setFilename(context.getFilename())
 					.setMessage("Keyword \"" + s + "\" should be written with lowercase characters for consistency in code.")
 					.build());
 			}

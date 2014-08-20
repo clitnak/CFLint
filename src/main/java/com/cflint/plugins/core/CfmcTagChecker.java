@@ -68,7 +68,7 @@ public class CfmcTagChecker implements CFLintScanner {
 					if (type != null && type.equals(inputType)) {
 						int begLine = element.getSource().getRow(element.getBegin());
 						bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode("USE_CFMC_TAGS")
-								.setSeverity(CFSeverity.CRITICAL.getValue()).setFilename(context.getFilename())
+								.setSeverity(CFSeverity.ERROR.getValue()).setFilename(context.getFilename())
 								.setMessage("HTML tag <input type=\"" + inputType + "\"> should be replaced with corresponding CFMC " 
 											+ inputTypes.get(inputType) + " tag.")
 								.build());
@@ -79,7 +79,7 @@ public class CfmcTagChecker implements CFLintScanner {
 					if (tagName.equals(htmlTag)) {
 						int begLine = element.getSource().getRow(element.getBegin());
 						bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode("USE_CFMC_TAGS")
-								.setSeverity(CFSeverity.CRITICAL.getValue()).setFilename(context.getFilename())
+								.setSeverity(CFSeverity.ERROR.getValue()).setFilename(context.getFilename())
 								.setMessage("HTML tag <" + htmlTag + "> should be replaced with corresponding CFMC " 
 											+ htmlToCfmc.get(htmlTag) + " tag")
 								.build());

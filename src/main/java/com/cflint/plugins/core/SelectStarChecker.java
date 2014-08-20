@@ -16,10 +16,14 @@ import com.cflint.plugins.CFLintScanner;
 import com.cflint.plugins.Context;
 import com.cflint.tools.CFMLTag;
 import com.cflint.tools.CFSeverity;
+import com.cflint.tools.CFMLTag;
 
 @Extension
 public class SelectStarChecker implements CFLintScanner {
 	final CharSequence selectStar = "select*";
+	final String messageCode = "AVOID_SELECT_*_IN_QUERY";
+	final String message = "Avoid using 'select *' in a query";
+
 	public void expression(final CFExpression expression, final Context context, final BugList bugs) {
 		
 	}
@@ -30,16 +34,16 @@ public class SelectStarChecker implements CFLintScanner {
 	
 	public void element(final Element element, final Context context, final BugList bugs) {
 		String tagName = element.getName();
-		if (tagName.equals("cfquery")){
+		if (tagName.equals(CFMLTag.CFQUERY.getValue())){
 			
 			String queryGuts = element.getContent().toString().replaceAll("\\s+","");
 			queryGuts = queryGuts.toLowerCase();
 
 			if (queryGuts.contains(selectStar)){
 				int beginLine = element.getSource().getRow(element.getBegin());
-				bugs.add(new BugInfo.BugInfoBuilder().setLine(beginLine).setMessageCode("AVOID_SELECT_*_IN_QUERY")
-					.setSeverity(CFSeverity.CRITICAL.getValue()).setFilename(context.getFilename())
-					.setMessage("Avoid using 'select *' in a query")
+				bugs.add(new BugInfo.BugInfoBuilder().setLine(beginLine).setMessageCode(messageCode)
+					.setSeverity(CFSeverity.ERROR.getValue()).setFilename(context.getFilename())
+					.setMessage(message)
 					.build());
 				}
 			}
