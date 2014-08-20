@@ -13,8 +13,7 @@ import com.cflint.tools.CFSeverity;
 
 @Extension
 public class ScriptTagChecker implements CFLintScanner {
-	private static final int SCRIPT_LENGTH_THRESHOLD = 1;
-	
+	private static final String message = "Don't use inline <script> tags, consider making it a <cfmcjavascript> tag";
 	public void expression(final CFExpression expression, final Context context, final BugList bugs) {
 		
 	}
@@ -26,13 +25,14 @@ public class ScriptTagChecker implements CFLintScanner {
 	//rule: don't use inline javascript in cfm and cfc files
 	public void element(final Element element, final Context context, final BugList bugs) {
 		if (element.getName().equals("script")) {  
-			int endLine = element.getSource().getRow(element.getEnd()); 
-			int begLine = element.getSource().getRow(element.getBegin());
-			int total = endLine - begLine;
-			if (total > SCRIPT_LENGTH_THRESHOLD) {
+			String src = element.getAttributeValue("src");
+			if (src == null) {
+				int endLine = element.getSource().getRow(element.getEnd()); 
+				int begLine = element.getSource().getRow(element.getBegin());
+				int total = endLine - begLine;
 				bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode("AVOID_USING_INLINE_JS")
 						.setSeverity(CFSeverity.WARNING.getValue()).setFilename(context.getFilename())
-						.setMessage(element.getName() + " is too long, consider making it a <cfmcjavascript> tag")
+						.setMessage(message)
 						.build());
 			}
 		}
