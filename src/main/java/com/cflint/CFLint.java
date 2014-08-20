@@ -18,13 +18,10 @@ import org.antlr.runtime.RecognitionException;
 
 import com.cflint.listeners.ProgressMonitorListener;
 import com.cflint.listeners.ScanProgressListener;
-import com.cflint.plugins.CFLintScanner;
-import com.cflint.plugins.Context;
-import com.cflint.plugins.core.CFInsertTagChecker;
-import com.cflint.plugins.core.CFModuleTagChecker;
-import com.cflint.plugins.core.CFUpdateTagChecker;
-import com.cflint.plugins.core.SelectStarChecker;
+import com.cflint.plugins.*;
+import com.cflint.plugins.core.*;
 import com.cflint.tools.CFLintFilter;
+import com.cflint.tools.CFSeverity;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
@@ -51,7 +48,9 @@ import cfml.parsing.cfscript.script.CFIfStatement;
 import cfml.parsing.cfscript.script.CFScriptStatement;
 
 public class CFLint implements IErrorReporter {
-
+	
+	static final int LINES_THRESHOLD = 600; 
+	static final int CHAR_PER_LINE_THRESHOLD = 100; 
 	StackHandler handler = new StackHandler();
 	boolean inFunction = false;
 	boolean inAssignment = false;
@@ -89,6 +88,7 @@ public class CFLint implements IErrorReporter {
 				//new CfmcTagChecker(),
 				//new TagCaseChecker(),
 				//new CFComponentChecker(),
+				new ScriptTagChecker(),
 				new SelectStarChecker(),
 				new CFModuleTagChecker(),
 				new CFInsertTagChecker(),
@@ -135,15 +135,13 @@ public class CFLint implements IErrorReporter {
 				while (scanner.hasNext()) {
 					lines++;
 					String line = scanner.nextLine();
-					int lineLengthThreshold = 180;
-					//check number of characters per line
-					//rule: number of character per line should be under lineLengthThreshold
-					if (line.length() > lineLengthThreshold) {
-						bugs.add(new BugInfo.BugInfoBuilder().setMessageCode("EXCESSIVE_FILE_LENGTH")
+					//rule: number of character per line should be under CHAR_PER_LINE_THRESHOLD
+					if (line.length() > CHAR_PER_LINE_THRESHOLD) {
+						bugs.add(new BugInfo.BugInfoBuilder().setMessageCode("EXCESSIVE_LINE_LENGTH")
 								.setFilename(folderOrFile.getAbsolutePath())
 								.setMessage("Line number " + lines + " is " + line.length() + " characters long. Over the " 
-										+ lineLengthThreshold + " character threshold")
-								.setSeverity("INFO").build());
+										+ CHAR_PER_LINE_THRESHOLD + " character threshold")
+								.setSeverity(CFSeverity.WARNING.getValue()).build());
 					}
 				}
 				scanner.close();
@@ -151,12 +149,11 @@ public class CFLint implements IErrorReporter {
 				e1.printStackTrace();
 			}
 			
-			int linesThreshold = 500; //move this to be a static constant
-			if (lines > linesThreshold) { 
+			if (lines > LINES_THRESHOLD) { 
 				bugs.add(new BugInfo.BugInfoBuilder().setMessageCode("EXCESSIVE_FILE_LENGTH")
 						.setFilename(folderOrFile.getAbsolutePath())
-						.setMessage(folderOrFile.getName() + " is " + lines + " lines long. Over the " + linesThreshold + " line threshold")
-						.setSeverity("INFO").build());
+						.setMessage(folderOrFile.getName() + " is " + lines + " lines long. Over the " + LINES_THRESHOLD + " line threshold")
+						.setSeverity(CFSeverity.WARNING.getValue()).build());
 			}*/
 			
 			final String src = load(folderOrFile);
