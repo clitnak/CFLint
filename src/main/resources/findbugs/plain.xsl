@@ -34,7 +34,7 @@
 <xsl:variable name="bugTableHeader">
 	<tr class="tableheader">
 		<th align="left">Warning</th>
-		<th align="left">Priority</th>
+		<th align="left">Severity</th>
 		<th align="left">Details</th>
 	</tr>
 </xsl:variable>
