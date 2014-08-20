@@ -1,4 +1,7 @@
 package com.cflint.tools;
+/**
+* Referenced inside plain.xsl at 158 and cflint-to-findbugs.xsl at 100
+*/
 
 public enum CFSeverity {
 	INFO("Info"),
