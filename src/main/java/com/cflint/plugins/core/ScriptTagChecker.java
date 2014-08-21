@@ -14,6 +14,7 @@ import com.cflint.tools.CFSeverity;
 @Extension
 public class ScriptTagChecker implements CFLintScanner {
 	private static final String message = "Don't use inline <script> tags, consider making it a <cfmcjavascript> tag";
+	
 	public void expression(final CFExpression expression, final Context context, final BugList bugs) {
 		
 	}
@@ -25,8 +26,8 @@ public class ScriptTagChecker implements CFLintScanner {
 	//rule: don't use inline javascript in cfm and cfc files
 	public void element(final Element element, final Context context, final BugList bugs) {
 		if (element.getName().equals("script")) {  
-			String src = element.getAttributeValue("src");
-			if (src == null) {
+			String src = element.getStartTag().toString();
+			if (src.matches(".*src=.*")) {
 				int endLine = element.getSource().getRow(element.getEnd()); 
 				int begLine = element.getSource().getRow(element.getBegin());
 				int total = endLine - begLine;
