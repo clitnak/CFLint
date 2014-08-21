@@ -19,6 +19,7 @@ import com.cflint.tools.CFSeverity;
 public class CFNestedControlStatementChecker implements CFLintScanner {
 	
 	private int nestedLevel = 3; // deepest nested level allowed
+	final String messageCode = "NESTED_CONTROL_STATEMENTS_TOO_DEEP";
 	
 	public void expression(final CFExpression expression, final Context context, final BugList bugs) {
 		
@@ -50,8 +51,8 @@ public class CFNestedControlStatementChecker implements CFLintScanner {
 		for (String s : CFMLControlStatement.keywordValues()) {
 			if (element.getName().equalsIgnoreCase(s)) {
 				int begLine = element.getSource().getRow(element.getBegin());
-				bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode("NESTED_CONTROL_STATEMENTS_TOO_DEEP")
-					.setSeverity(CFSeverity.CAUTION.getValue()).setFilename(context.getFilename())
+				bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode(messageCode)
+					.setSeverity(CFSeverity.WARNING.getValue()).setFilename(context.getFilename())
 					.setMessage("The element " + element.getName() + " is " + depth + " deep. This makes it hard to debug")
 					.build());
 				return;

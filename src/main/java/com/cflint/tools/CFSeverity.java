@@ -5,9 +5,7 @@ package com.cflint.tools;
 
 public enum CFSeverity {
 	INFO("Info"),
-	CAUTION("Caution"),
 	WARNING("Warning"),
-	CRITICAL("Critical"),
 	ERROR("Error"),
 	FATAL("Fatal");
 

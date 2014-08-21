@@ -13,6 +13,8 @@ import com.cflint.tools.CFSeverity;
 
 @Extension
 public class CFEmptyCodeBlockChecker implements CFLintScanner {
+	final String messageCode = "POSSIBLE_EMPTY_BLOCK_OF_CODE";
+	final String message = "There seems to be a possible code block that is empty.";
 		
 	public void expression(final CFExpression expression, final Context context, final BugList bugs) {
 		
@@ -26,9 +28,9 @@ public class CFEmptyCodeBlockChecker implements CFLintScanner {
 		
 		if (element.getContent().isWhiteSpace() && element.getEndTag() != null) {
 			int begLine = element.getSource().getRow(element.getBegin());
-			bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode("POSSIBLE_EMPTY_BLOCK_OF_CODE")
-				.setSeverity(CFSeverity.CAUTION.getValue()).setFilename(context.getFilename())
-				.setMessage("There seems to be a possible code block that is empty.")
+			bugs.add(new BugInfo.BugInfoBuilder().setLine(begLine).setMessageCode(messageCode)
+				.setSeverity(CFSeverity.WARNING.getValue()).setFilename(context.getFilename())
+				.setMessage(message)
 				.build());
 		}
 	}

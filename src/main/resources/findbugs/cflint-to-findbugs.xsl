@@ -10,7 +10,7 @@ xmlns:sets="http://exslt.org/sets">
 
 	<!-- timestamp="1385123483628" analysisTimestamp="1385123483675" -->
 	<xsl:template match="/">
-		<BugCollection version="0.1.6" sequence="0" release="">
+		<BugCollection version="0.2.0" sequence="0" release="">
 			<Project projectName="">
 			</Project>
 			<xsl:apply-templates select="/issues/issue" />
@@ -99,11 +99,9 @@ xmlns:sets="http://exslt.org/sets">
 			<xsl:attribute name="priority">
 				<xsl:choose>
 					<xsl:when test="../@severity = 'FATAL' or ../@severity = 'Fatal'">1</xsl:when>
-					<xsl:when test="../@severity = 'ERROR' or ../@severity = 'Error'">2</xsl:when>
-					<xsl:when test="../@severity = 'CRITICAL' or ../@severity = 'Critical'">3</xsl:when>
-					<xsl:when test="../@severity = 'WARNING' or ../@severity = 'Warning'">4</xsl:when>
-					<xsl:when test="../@severity = 'CAUTION' or ../@severity = 'Caution'">5</xsl:when>
-					<xsl:when test="../@severity = 'INFO' or ../@severity = 'Info'">6</xsl:when>
+					<xsl:when test="../@severity = 'ERROR' or ../@severity = 'Error'">1</xsl:when>
+					<xsl:when test="../@severity = 'ERROR' or ../@severity = 'Warning'">2</xsl:when>
+					<xsl:when test="../@severity = 'CRITICAL' or ../@severity = 'Info'">3</xsl:when>
 				</xsl:choose>
 			</xsl:attribute>
 
@@ -183,34 +181,3 @@ xmlns:sets="http://exslt.org/sets">
 	</xsl:template>
 
 </xsl:stylesheet>
-
-<!-- vim:set ts=4: -->
-<!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
-
-<metaInformation>
-	<scenarios>
-		<scenario default="yes" name="Scenario1" userelativepaths="yes" externalpreview="no" url="..\..\..\..\..\..\..\..\..\temp\out.xml" htmlbaseurl="" outputurl="" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength=""
-		          urlprofilexml="" commandline="" additionalpath="" additionalclasspath="" postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal"
-		          customvalidator="">
-			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bXsltOneIsOkay" value="true"/>
-			<advancedProp name="bSchemaAware" value="true"/>
-			<advancedProp name="bXml11" value="false"/>
-			<advancedProp name="iValidation" value="0"/>
-			<advancedProp name="bExtensions" value="true"/>
-			<advancedProp name="iWhitespace" value="0"/>
-			<advancedProp name="sInitialTemplate" value=""/>
-			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bWarnings" value="true"/>
-			<advancedProp name="bUseDTD" value="false"/>
-			<advancedProp name="iErrorHandling" value="fatal"/>
-		</scenario>
-	</scenarios>
-	<MapperMetaTag>
-		<MapperInfo srcSchemaPathIsRelative="yes" srcSchemaInterpretAsXML="no" destSchemaPath="" destSchemaRoot="" destSchemaPathIsRelative="yes" destSchemaInterpretAsXML="no"/>
-		<MapperBlockPosition></MapperBlockPosition>
-		<TemplateContext></TemplateContext>
-		<MapperFilter side="source"></MapperFilter>
-	</MapperMetaTag>
-</metaInformation>
--->
